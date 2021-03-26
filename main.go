@@ -13,7 +13,6 @@ func main() {
 		os.Exit(-1)
 	}
 
-
 	Proxys := http.GetAvailProxys()
 
 	for _, proxy := range Proxys {
@@ -21,7 +20,7 @@ func main() {
 		if err != nil {
 			continue
 		}
-		content = strings.Trim(strings.Trim(content, " callback("),")")
+		content = strings.Trim(strings.Trim(content, " callback("), ")")
 		fmt.Println(content)
 		os.Exit(0)
 	}
