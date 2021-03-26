@@ -142,7 +142,7 @@ func TestHttp(t *testing.T) {
 }
 
 func TestProxy(t *testing.T) {
-	res := http2.GetProxy()
+	//res := http2.GetProxy()
 
 	//log.println(res)
 }
