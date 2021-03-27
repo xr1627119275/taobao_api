@@ -5,6 +5,7 @@ import (
 	"flag"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/chromedp"
+	"go-js/src/conf"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -30,7 +31,7 @@ func Exec(webUrl string) (url string, Cookies []*http.Cookie) {
 	)
 	var devToolWsUrl string
 
-	flag.StringVar(&devToolWsUrl, "devtools-ws-url", "ws://localhost:9222/devtools/browser/e33c437d-a859-43e9-b407-13761e143eb7", "DevTools Websocket URL")
+	flag.StringVar(&devToolWsUrl, "devtools-ws-url", conf.Config.WsUrl, "DevTools Websocket URL")
 	flag.Parse()
 
 	if runtime.GOOS == "linux" {
@@ -79,7 +80,6 @@ func Exec(webUrl string) (url string, Cookies []*http.Cookie) {
 					Value: v.Value,
 				})
 			}
-			log.Println(c)
 			return nil
 		}),
 	)

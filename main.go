@@ -3,9 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"go-js/src/chromedp"
 	"go-js/src/conf"
 	"go-js/src/http"
+	"go-js/src/js"
 	"log"
+	http2 "net/http"
 	"os"
 	"strings"
 )
@@ -17,6 +20,21 @@ func toRequest(url string, proxy *http.ProxyData) (err error) {
 		return
 	}
 	content = strings.Trim(strings.Trim(content, " callback("), ")")
+	fmt.Println(content)
+	if len(content) > 200 {
+		SetLastProxyIP(proxy)
+	}
+	return
+}
+
+func toRequestDefault(url string, Cookies []*http2.Cookie, proxy *http.ProxyData) (err error) {
+	content, err := http.UrlCookie2Content(url, Cookies, http.ProxyParse(proxy))
+
+	if err != nil {
+		return
+	}
+	content = js.JSCbContent(content)
+	//content = strings.Trim(content, " mtopjsonp1(")
 	fmt.Println(content)
 	if len(content) > 200 {
 		SetLastProxyIP(proxy)
@@ -63,10 +81,15 @@ func main() {
 	}
 	//http.PvId , _  = http.GetPvid(tabaoUrl, nil)
 
+	apiUrl, cookies := chromedp.Exec(tabaoUrl)
+
+	log.Println(apiUrl)
+	log.Println(cookies)
 	lastProxy := ReadLastProxy()
 
 	if lastProxy != nil {
-		err := toRequest(tabaoUrl, lastProxy)
+		//err := toRequest(tabaoUrl, lastProxy)
+		err := toRequestDefault(apiUrl, cookies, lastProxy)
 		if err == nil {
 			os.Exit(0)
 			return
@@ -74,27 +97,17 @@ func main() {
 		SetLastProxyIP(nil)
 	}
 
-	//Proxys := http.GetAvailProxys()
-	Proxys := []*http.ProxyData{nil}
-
+	Proxys := http.GetAvailProxys()
 	log.Println(Proxys)
 
-	//wg := &sync.WaitGroup{}
 	for _, proxy := range Proxys {
 		log.Println(proxy)
-		//log.Println(http.GetPvid(tabaoUrl , http.ProxyParse(proxy)))
-		//wg.Add(1)
-		//go func(wg *sync.WaitGroup, proxy *http.ProxyData) {
-		//	err := toRequest(tabaoUrl, proxy)
-		//	if err == nil {
-		//		log.Println("get:" , proxy)
-		//		os.Exit(0)
-		//	}
-		//	wg.Done()
-		//}(wg, proxy)
-		err := toRequest(tabaoUrl, proxy)
+
+		err := toRequestDefault(apiUrl, cookies, proxy)
 		if err == nil {
-			log.Println("get:", proxy)
+			//log.Println("get:", proxy)
+
+			SetLastProxyIP(proxy)
 			os.Exit(0)
 			return
 		}
@@ -102,7 +115,7 @@ func main() {
 	//wg.Wait()
 	SetLastProxyIP(nil)
 
-	if toRequest(tabaoUrl, nil) == nil {
+	if toRequestDefault(apiUrl, cookies, nil) == nil {
 		log.Println("get_default")
 		os.Exit(0)
 	}

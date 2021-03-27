@@ -215,14 +215,13 @@ return O.toLowerCase();
 
 `
 
-
 func JSHex(str string, data string) string {
 	hexStr, _ := vm.Run(fmt.Sprintf(`(function(str, data){
 
 		return h(str+JSON.stringify(data))
 	})('%s', %s)
 `, str, data))
-	return fmt.Sprintf("%s",hexStr)
+	return fmt.Sprintf("%s", hexStr)
 }
 
 func GetLensId(e string) string {
@@ -235,7 +234,7 @@ func GetLensId(e string) string {
 		}
 	  })('%s')
 	`, e))
-	return fmt.Sprintf("%s",res)
+	return fmt.Sprintf("%s", res)
 }
 func GetToken(e string) string {
 	res, _ := vm.Run(fmt.Sprintf(`
@@ -243,7 +242,7 @@ func GetToken(e string) string {
     	return a.split("_")[0]
 	  })('%s')
 	`, e))
-	return fmt.Sprintf("%s",res)
+	return fmt.Sprintf("%s", res)
 }
 func JSON(a string) string {
 	res, _ := vm.Run(fmt.Sprintf(`
@@ -251,7 +250,15 @@ func JSON(a string) string {
     	return JSON.stringify(a)
 	  })('%s')
 	`, a))
-	return fmt.Sprintf("%s",res)
+	return fmt.Sprintf("%s", res)
+}
+
+func JSCbContent(a string) string {
+	res, _ := vm.Run(fmt.Sprintf(`
+		var mtopjsonp2 = function(obj) { return obj && JSON.stringify(obj) }; mtopjsonp1 = mtopjsonp2;
+		%s
+	`, a))
+	return fmt.Sprintf("%s", res)
 }
 func init() {
 	vm = otto.New()

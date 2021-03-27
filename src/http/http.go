@@ -53,6 +53,21 @@ func (param *ApiParam) GetContent(proxies Proxies) (string, error) {
 	return req.String(), nil
 }
 
+func UrlCookie2Content(url string, Cookies []*http.Cookie, proxies Proxies) (string, error) {
+	var options = &grequests.RequestOptions{
+		RequestTimeout: time.Second * 3,
+		DialTimeout:    time.Second * 3,
+		Cookies:        Cookies,
+		Proxies:        proxies,
+	}
+
+	req, err := grequests.Get(url, options)
+	if err != nil {
+		return "", err
+	}
+	return req.String(), nil
+}
+
 func GetContent(_url string, proxies Proxies) (string, error) {
 	//var _url = "https://uland.taobao.com/taolijin/edetail?vegasCode=BA4AUQVU&type=qtz&union_lens=lensId%3A21053dc7_0907_17861e80b13_10dd%3Btraffic_flag%3Dlm&relationId=2412826531&un=849771b72d5a07119ba585bab8a15b30&share_crt_v=1&ut_sk=1.utdid_28187926_1616550300551.TaoPassword-Outsidthis.taoketop&spm=a2159r.13376465.0.0&sp_tk=VHdpTlgwYUNtb2s=&bxsign=tcdvxdviWT681nhJ0adq_0OY68zqlWfOZODDSmHsMwwX19nvh1Fn1ocOyTEaLUxj7H7ujarNOKOMb_SNRlyKUdvKCI599dnv46ilEvGoOgLrZw/"
 

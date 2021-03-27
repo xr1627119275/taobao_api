@@ -3,6 +3,7 @@ module go-js
 go 1.15
 
 require (
+	github.com/astaxie/beego v1.12.3
 	github.com/chromedp/cdproto v0.0.0-20210323015217-0942afbea50e
 	github.com/chromedp/chromedp v0.6.10
 	github.com/levigross/grequests v0.0.0-20190908174114-253788527a1a
