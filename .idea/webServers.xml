@@ -3,7 +3,7 @@
   <component name="WebServers">
     <option name="servers">
       <webServer id="f50c0fcc-9a22-433f-8735-c0e1dcf9d292" name="xrdev.top">
-        <fileTransfer rootFolder="/root/go-js" accessType="SFTP" host="xrdev.top" port="22" sshConfigId="b50db90a-9005-44c0-8a14-b52f849ed8b0" sshConfig="root@xrdev.top:22 key" keyPair="true">
+        <fileTransfer rootFolder="/root/go-js" accessType="SFTP" host="xrdev.top" port="22" sshConfigId="b50db90a-9005-44c0-8a14-b52f849ed8b0" sshConfig="root@xrdev.top:22 agent" authAgent="true">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>

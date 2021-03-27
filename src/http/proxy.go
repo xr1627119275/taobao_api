@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"go-js/src/conf"
 	"net/url"
-	"sync"
 	"time"
 
 	"github.com/levigross/grequests"
@@ -34,10 +33,11 @@ func GetProxy() *ProxyResponse {
 
 func (proxy *ProxyData) Check() bool {
 	proxies := ProxyParse(proxy)
-	req, err := grequests.Get("https://uland.taobao.com", &grequests.RequestOptions{
-		RequestTimeout: time.Second,
-		DialTimeout:    time.Second,
-		Proxies:        proxies,
+	req, err := grequests.Get("https://uland.taobao.com/", &grequests.RequestOptions{
+		RequestTimeout:      time.Second * 3,
+		DialTimeout:         time.Second * 3,
+		TLSHandshakeTimeout: time.Second * 3,
+		Proxies:             proxies,
 	})
 	if err != nil {
 		return false
@@ -51,25 +51,32 @@ func (proxy *ProxyData) Check() bool {
 
 func GetAvailProxys() (proxys []*ProxyData) {
 	res := GetProxy()
-	wg := &sync.WaitGroup{}
+	//wg := &sync.WaitGroup{}
 	for i := 0; i < len(res.Data); i++ {
 		item := res.Data[i]
-		wg.Add(1)
-		go func(wg *sync.WaitGroup) {
-			check := item.Check()
-			if check {
-				proxys = append(proxys, item)
-			}
-			wg.Done()
-		}(wg)
+
+		//proxys = append(proxys, item)
+		//wg.Add(1)
+		//go func(wg *sync.WaitGroup) {
+		//	check := item.Check()
+		//	if check {
+		proxys = append(proxys, item)
+		//	}
+		//	wg.Done()
+		//}(wg)
 	}
-	wg.Wait()
+	//wg.Wait()
 	return
 }
 
-func ProxyParse(proxy *ProxyData) Proxies {
-	URL, _ := url.Parse(fmt.Sprintf("http://%s:%d", proxy.IP, proxy.Port))
-	return Proxies{
-		"http": URL,
+func ProxyParse(proxy *ProxyData) (proxies Proxies) {
+	if proxy != nil {
+		URL, _ := url.Parse(fmt.Sprintf("socks5://%s:%d", proxy.IP, proxy.Port))
+		proxies = Proxies{
+			"http":  URL,
+			"https": URL,
+		}
 	}
+
+	return
 }
