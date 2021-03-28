@@ -83,6 +83,10 @@ func main() {
 
 	apiUrl, cookies := chromedp.Exec(tabaoUrl)
 
+	if len(strings.Trim(apiUrl, " ")) == 0 {
+		os.Exit(-1)
+		return
+	}
 	log.Println(apiUrl)
 	log.Println(cookies)
 	lastProxy := ReadLastProxy()
