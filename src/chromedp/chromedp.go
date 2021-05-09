@@ -65,7 +65,6 @@ func Exec(webUrl string) (url string, Cookies []*http.Cookie) {
 	chromedp.Run(taskCtx,
 		network.Enable(),
 		chromedp.Navigate(webUrl),
-		//chromedp.Navigate(`https://xrdev.top/api/test.php`),
 		chromedp.ActionFunc(func(ctx context.Context) error {
 			// 获取cookie
 			cookies, err := network.GetAllCookies().Do(ctx)
@@ -95,7 +94,7 @@ func listenForNetworkEvent(ctx context.Context, url *string) {
 			resp := ev.Response
 			if len(resp.Headers) != 0 {
 				// log.Printf("received headers: %s", resp.Headers)
-				if strings.HasPrefix(resp.URL, "https://h5api.m.taobao.com/h5/mtop.alimama.union.xt.biz.default.api.entry") {
+				if strings.HasPrefix(resp.URL, "https://api.cmsv5.iyunzk.com/apis") {
 					*url = resp.URL
 					return
 				}

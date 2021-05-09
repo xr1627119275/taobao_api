@@ -2,7 +2,7 @@
 <project version="4">
   <component name="SshConfigs">
     <configs>
-      <sshConfig authType="OPEN_SSH" host="xrdev.top" id="b50db90a-9005-44c0-8a14-b52f849ed8b0" port="22" nameFormat="DESCRIPTIVE" username="root" />
+      <sshConfig authType="OPEN_SSH" connectionConfig="{&quot;serverAliveInterval&quot;:300}" host="xrdev.top" id="b50db90a-9005-44c0-8a14-b52f849ed8b0" port="22" nameFormat="DESCRIPTIVE" username="root" />
     </configs>
   </component>
 </project>

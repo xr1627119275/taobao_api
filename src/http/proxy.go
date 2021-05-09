@@ -49,7 +49,7 @@ func (proxy *ProxyData) Check() bool {
 	return false
 }
 
-func GetAvailProxys() (proxys []*ProxyData) {
+func GetAvailProxys() (proxys []ProxyData) {
 	res := GetProxy()
 	//wg := &sync.WaitGroup{}
 	for i := 0; i < len(res.Data); i++ {
@@ -60,7 +60,7 @@ func GetAvailProxys() (proxys []*ProxyData) {
 		//go func(wg *sync.WaitGroup) {
 		//	check := item.Check()
 		//	if check {
-		proxys = append(proxys, item)
+		proxys = append(proxys, *item)
 		//	}
 		//	wg.Done()
 		//}(wg)
